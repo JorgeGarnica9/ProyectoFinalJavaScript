@@ -516,8 +516,13 @@ btnFinishBuy.onclick = () => {
   	resetOptionsPay()
 	hiddeCheckout();
 	hiddeCart();
-	buyCounter = buyCounter+1
-	localStorage.setItem(buyCounter, totalValueCalculated.toFixed(2))
+	buyCounter = buyCounter+1;
+	localStorage.setItem(buyCounter, totalValueCalculated.toFixed(2));
+	Swal.fire({
+		title: "COMPRA REALIZADA CON EXITO!",
+		text: "Gracias por confiar en nosotros!",
+		icon: "success"
+		});
 };
 
 btnCancelBuy.onclick = () => {
