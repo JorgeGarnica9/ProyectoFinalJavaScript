@@ -391,18 +391,39 @@ const listenEventsOnCart = () => {
 		};
 	}
 
-	for (inputQty of allInputsProductQty) {
-		inputQty.onchange = () => {
-			console.log("apretaste sumar producto")
-			addProductToTheCartList(inputQty);
-		};
-	}
 };
 
 /*-----------------------------------------------------------*/
+let salesRecord = []
+
+const sellHistory = [
+	{articulo : 'Playstation 5' , ventas : 0},
+	{articulo : 'Playstation 4' , ventas : 0},
+	{articulo : 'God of war: Ragnarok' , ventas : 0},
+	{articulo : 'Auricular Sony' , ventas : 0},
+	{articulo : 'Nintendo Switch' , ventas : 0},
+	{articulo : 'Hogwarts Legacy' , ventas : 0},
+	{articulo : 'Estacion de carga' , ventas : 0},
+	{articulo : 'Fire emblem' , ventas : 0},
+	{articulo : 'AC: Mirage' , ventas : 0}
+]
+
+const salesCounter = () => {
+    for (let i = 0; i <= sellHistory.length-1; i += 1) {
+      sellHistory[i].ventas = salesRecord.filter(num => num == i).length;
+    };
+  };
+
+const soldCounter = () => {
+	for (let i = 0; i <= sellHistory.length-1; i += 1) {
+		sellHistory[i].ventas = salesRecord.filter(num => num == i).length;
+	  document.getElementById('sold'+i).innerText = sellHistory[i].ventas+' usuarios han comprado este art.';
+	};
+}
 
 for (let btnAddToCart of allBtnAddToCart) {
 	btnAddToCart.onclick = () => {
+		salesRecord.push(btnAddToCart.getAttribute('id'));
 		addCounterCart();
 		addPriceToSubtotal(btnAddToCart);
 		showProductOnCart(btnAddToCart);
@@ -523,6 +544,9 @@ btnFinishBuy.onclick = () => {
 		text: "Gracias por confiar en nosotros!",
 		icon: "success"
 		});
+	salesCounter();
+	soldCounter();
+	saveSR();
 };
 
 btnCancelBuy.onclick = () => {
@@ -630,6 +654,24 @@ const saveStorage = (key, value) => {
 for (const product of productos) {
 	saveStorage(product.articulo, JSON.stringify(product));	
 }
+
+const saveSR = () => {
+	localStorage.setItem('salesRecord', JSON.stringify(salesRecord));
+};
+
+const getSR = () => {
+	const SRStorage = JSON.parse(localStorage.getItem('salesRecord'));
+	return SRStorage;
+};
+
+const getSalesRecord = () => {
+	if (localStorage.getItem('salesRecord')) {
+		salesRecord = getSR();
+		soldCounter();
+	}
+};
+
+document.addEventListener('DOMContentLoaded', getSalesRecord);
 
 /*Fetch*/
 
